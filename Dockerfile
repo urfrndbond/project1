@@ -1,7 +1,13 @@
-FROM python:3.7-alpine
+# use a node base image
+FROM node:7-onbuild
 
-RUN pip install requests
+# set maintainer
+LABEL maintainer "crudsinfotechng@gmail.com"
 
-COPY hello_there.py /
+# set a health check
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:8000 || exit 1
 
-CMD [ "python", "hello_there.py"]
+# tell docker what port to expose
+EXPOSE 8000
